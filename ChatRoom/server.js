@@ -1,7 +1,14 @@
 const express = require('express');
 const {dbSetup} = require('./Models/dbConnection');
 const {User} = require('./Models/User')
+const userRouter = require('./Routes/userRoute');
 const app = express();
+
+app.use("/",userRouter);
+
+app.use(function (req, res, next) {
+  next(new CustomError("Invalid Route", 404));
+});
 
 app.listen(5000,()=>{ 
     // dbSetup("chatDB");

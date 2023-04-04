@@ -1,12 +1,18 @@
 const express = require('express');
+const dotenv = require('dotenv');
+
+//import  route haandlers
 const {dbSetup} = require('./Models/dbConnection');
 const {User} = require('./Models/User')
 const userRouter = require('./Routes/userRoute');
-const bodyParser = require("body-parser");
+
 const app = express();
 
-app.use(bodyParser.json({ limit: "500mb" }));
-app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
+dotenv.config();
+// app.use(bodyParser.json({ limit: "500mb" }));
+// app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
+app.use(express.json());
+
 app.use("/",userRouter);
 
 app.use(function (req, res, next) {
@@ -14,7 +20,7 @@ app.use(function (req, res, next) {
 });
 
 app.listen(5000,()=>{ 
-    // dbSetup("chatDB");
+    dbSetup("chatDB");
     console.log("Listening at port 5000")
     sequelize.sync().then(() => {
 

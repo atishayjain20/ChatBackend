@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 
 //import  route haandlers
 const {dbSetup} = require('./Models/dbConnection');
-const {User} = require('./Models/User')
+const {User} = require('./Models/User');
+const globalErrorHandler = require('../ChatRoom/Middlewares/errorHandler');
 const userRouter = require('./Routes/userRoute');
 
 const app = express();
@@ -18,6 +19,8 @@ app.use("/",userRouter);
 app.use(function (req, res, next) {
   next(new CustomError("Invalid Route", 404));
 });
+
+app.use(globalErrorHandler);
 
 app.listen(5000,()=>{ 
     dbSetup("chatDB");

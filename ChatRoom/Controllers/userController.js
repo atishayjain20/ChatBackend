@@ -3,6 +3,9 @@ const catchAsyncError = require('../Utilities/catchAsyncError');
 const jwt = require('jsonwebtoken');
 const CustomError = require('../Utilities/customError');
 const customError = require('../Utilities/customError');
+const { Op } = require('sequelize');
+
+
 
 class userController {
     saveUserData = catchAsyncError(async(req,res,next)=>{
@@ -35,10 +38,33 @@ class userController {
             message: "successfully Login"
         })
     })
+    
+
+    getFilterData = catchAsyncError(async(req,res,next) => {
+        const { gender, age, country } = req.body;
+        User.findAll({
+            where: {
+                [Op.or]: [
+                    gender ? { gender } : {},
+                    age ? { age } : {},
+                    country ? { country } : {},
+                  ],
+            },
+          }).then(users => {
+            const data = users.map(user => user.get({ plain: true }));
+            console.log(data); 
+          }).catch(error => {
+            console.log(error);
+          });
+          res.json("ok")
+
+        
+       
+    });
 
     getUserData = catchAsyncError(async(req,res,next)=>{
         const userData = User.findAll().then(res => {
-            console.log("Data of user",res)
+            console.log("Data of user",userData)
             return res;
         }).catch((error) => {
             console.error('Failed to retrieve data : ', error);
@@ -46,7 +72,7 @@ class userController {
 
         res.status(200).json({
             success: true,
-            message: userData
+            message:"hello"
         })
     }) 
 }

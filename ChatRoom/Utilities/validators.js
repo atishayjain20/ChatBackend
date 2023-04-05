@@ -8,7 +8,5 @@ exports.validatePassword = (password) => {
       return "Password must contain at least one uppercase letter";
     if (!password.match(/[0-9]/))
       return "Password must contain at least one number";
-    if (!password.match(/[^a-zA-Z0-9]/))
-      return "Password must contain at least one special character";
     return null;
 };

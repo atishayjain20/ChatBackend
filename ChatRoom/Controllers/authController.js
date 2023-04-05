@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { User } = require('../Models/User');
 const catchAsyncError = require("../Utilities/catchAsyncError");
 const CustomError = require("../Utilities/customError");
 
@@ -30,6 +31,18 @@ class authController{
                 })
             }
         })   
+    })
+
+    saveUserData = catchAsyncError(async(req,res,next)=>{
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
+        const newUser = await User.create({...req.body})
+        let data={
+            time: Date.now(),
+            userId: newUser.userId,
+            name:newUser.name,
+        }
+        const token=jwt.sign(data,jwtSecretKey);
+        res.status(201).send(token);
     })
 }
 

@@ -7,14 +7,21 @@ const {User} = require('./Models/User');
 const globalErrorHandler = require('../ChatRoom/Middlewares/errorHandler');
 const userRouter = require('./Routes/userRoute');
 const authentication = require('./Middlewares/authentication');
+const authController = require('./Controllers/authController');
+const CustomError = require('./Utilities/customError');
 const app = express();
 
 dotenv.config();
 // app.use(bodyParser.json({ limit: "500mb" }));
 // app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
 app.use(express.json());
+
+app.post("/signup",authController.saveUserData);
+app.get("/login",authController.login);
+
 app.use(authentication.authenticate);
-app.use("/",userRouter);
+
+app.use("/user",userRouter);
 
 app.use(function (req, res, next) {
   next(new CustomError("Invalid Route", 404));

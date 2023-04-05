@@ -5,17 +5,7 @@ const catchAsyncError = require('../Utilities/catchAsyncError');
 const CustomError = require('../Utilities/customError');
 
 class userController {
-    saveUserData = catchAsyncError(async(req,res,next)=>{
-        let jwtSecretKey = process.env.JWT_SECRET_KEY;
-        const newUser = await User.create({...req.body})
-        let data={
-            time: Date.now(),
-            userId: newUser.userId,
-            name:newUser.name,
-        }
-        const token=jwt.sign(data,jwtSecretKey);
-        res.status(201).send(token);
-    })
+
     getUserData = catchAsyncError(async(req,res,next)=>{
         const user=await User.findByPk(req.query.userId,{attributes:{exclude:['loginTime','createdAt','updatedAt','password']}});
         res.status(200).send(user);

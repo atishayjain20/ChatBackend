@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../Models/User');
 const catchAsyncError = require('../Utilities/catchAsyncError');
 const CustomError = require('../Utilities/customError');
-const customError = require('../Utilities/customError');
 
 class userController {
     saveUserData = catchAsyncError(async(req,res,next)=>{
@@ -18,24 +17,8 @@ class userController {
         res.status(201).send(token);
     })
     getUserData = catchAsyncError(async(req,res,next)=>{
-        const user=await User.findByPk(req.query.userId);
-        if(!user){
-            throw new CustomError("User not exist",400);
-        }
-        bcrypt.compare(req.query.password.toString(),user.getDataValue('password'),function(err,result){
-            if (err) { throw new CustomError(err.message,400); }
-            if(result){
-                res.status(200).json({
-                    success:true,
-                    message: "successfully Login"
-                })
-            }else{
-                res.status(200).json({
-                    success:true,
-                    message: "UserId and password does not match..."
-                })
-            }
-        })        
+        const user=await User.findByPk(req.query.userId,{attributes:{exclude:['loginTime','createdAt','updatedAt','password']}});
+        res.status(200).send(user);
     })
 
     getAllUser = catchAsyncError(async(req,res,next)=>{

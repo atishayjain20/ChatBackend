@@ -32,17 +32,17 @@ app.use(globalErrorHandler);
 app.listen(5000,()=>{ 
     dbSetup("chatDB");
     console.log("Listening at port 5000")
-    sequelize.sync().then(() => {
+    // sequelize.sync().then(() => {
 
-        User.findAll().then(res => {
-            console.log("Data of user",res)
-        }).catch((error) => {
-            console.error('Failed to retrieve data : ', error);
-        });
+    //     User.findAll().then(res => {
+    //         console.log("Data of user",res)
+    //     }).catch((error) => {
+    //         console.error('Failed to retrieve data : ', error);
+    //     });
       
-      }).catch((error) => {
-        console.error('Unable to create table : ', error);
-      });
+    //   }).catch((error) => {
+    //     console.error('Unable to create table : ', error);
+    //   });
 });
 
 module.exports = app;

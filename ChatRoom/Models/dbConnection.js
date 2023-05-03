@@ -2,18 +2,6 @@ const mysql = require('mysql');
 const {Sequelize,DataTypes} = require("sequelize");
 
 exports.dbSetup=(dbName)=>{
-  sequelize = new Sequelize(
-   dbName,
-   'admin',
-   '2023demo',
-    {
-      host: 'database-1.cpxhclwvluez.us-east-1.rds.amazonaws.com',
-      port:3306,
-      dialectOptions: {
-        ssl:'Amazon RDS'
-      },
-      dialect: 'mysql'
-    });
 
   sequelize.authenticate().then(() => {
     console.log('Connection has been established successfully.');
@@ -41,20 +29,3 @@ exports.dbSetup=(dbName)=>{
 // });
 return sequelize;
 }
-// exports.dbSetup = (dbName) => { 
-//     var db=mysql.createConnection({
-//         host: "database-1.cpxhclwvluez.us-east-1.rds.amazonaws.com",
-//         port: 3306,
-//         user: "admin",
-//         password: "2023demo",
-//         database: dbName
-//     });
-
-//   db.connect((err)=>{
-//     if(err){
-//         console.log(err.message);
-//         return;
-//     }
-//     console.log("DB connected");
-//   })
-// }
